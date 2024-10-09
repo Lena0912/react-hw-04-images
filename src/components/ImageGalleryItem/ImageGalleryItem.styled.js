@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledImage = styled.img`
+export const StyledImageItem = styled.img`
 width: 100%;
 height: 200px;
 object-fit: cover;

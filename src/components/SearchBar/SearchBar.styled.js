@@ -16,7 +16,7 @@ export const SearchBarInput = styled.form`
   border-radius: ${({theme}) => theme.radii.sm};
   padding: 8px;
   background-color: ${({ theme }) => theme.colors.bgInput};
-  gap: 20px;
+  gap: 8px;
 `;
 
 export const SearchInput = styled.input`
