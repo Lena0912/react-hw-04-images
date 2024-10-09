@@ -2,6 +2,7 @@ import { Component } from "react";
 import { Searchbar } from "./SearchBar/SearchBar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { fetchImages } from './api';
+import { Layout } from "./Layout";
 
 
 export class App extends Component {
@@ -88,7 +89,7 @@ const filtredImages = data.hits.map(({ id, webformatURL, largeImageURL }) => ({
   render() {
     const {images, loading, error} = this.state
     return (
-      <div>
+      <Layout>
         <Searchbar onSubmit={this.handleSubmit} />
         {error && <div>Error loading...</div>}
         <ImageGallery images={images} />
@@ -97,7 +98,7 @@ const filtredImages = data.hits.map(({ id, webformatURL, largeImageURL }) => ({
           <button onClick={this.handeLoadMore}>Load more</button>
         )}
         {loading && <div>Loader...</div>}
-      </div>
+      </Layout>
     );
   }
 }
