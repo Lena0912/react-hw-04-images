@@ -1,20 +1,20 @@
-import { SearchBarContainer, SearchBarInput } from "./SearchBar.styled";
+import { SearchBarContainer, SearchBarInput, SearchButton, SearchInput } from "./SearchBar.styled";
+import { BiSearchAlt } from 'react-icons/bi';
 
-
-export const Searchbar = ({onSubmit
-
-}) => {
+export const Searchbar = ({onSubmit}) => {
     return (
       <SearchBarContainer>
         <SearchBarInput onSubmit={onSubmit}>
-          <input
+          <SearchInput
             name="query"
             type="text"
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
           />
-          <button type="submit">Search</button>
+          <SearchButton type="submit">
+            <BiSearchAlt />
+          </SearchButton>
         </SearchBarInput>
       </SearchBarContainer>
     );

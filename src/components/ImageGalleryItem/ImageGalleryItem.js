@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import Modal from 'react-modal';
+import { StyledImage } from './ImageGalleryItem.styled';
 
 const customStyles = {
   content: {
@@ -9,6 +10,17 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
+    width: '80%',
+    maxWidth: '900px',
+    height: 'auto',
+    borderRadius: '10px',
+    padding: '20px',
+    backgroundColor: '$({ theme }) => theme.colors.white}',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    zIndex: '1000',
   },
 };
 
@@ -34,7 +46,7 @@ export class ImageGalleryItem extends Component {
     } = this.props;
     return (
       <div>
-        <img
+        <StyledImage
           src={webformatURL}
           alt={tags}
           onClick={this.openModal}
