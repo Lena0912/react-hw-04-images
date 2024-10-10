@@ -2,7 +2,7 @@ import { Component } from "react";
 import { Searchbar } from "./SearchBar/SearchBar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { fetchImages } from './api';
-import { Layout } from "./Layout";
+import { Layout, LoadMoreBtn } from "./Layout";
 import { Loader } from "./Loader/Loader";
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -74,7 +74,7 @@ const filtredImages = data.hits.map(({ id, webformatURL, largeImageURL }) => ({
         <Toaster />       
         <ImageGallery images={images} />
         {images.length > 0 && (
-          <button onClick={this.handleLoadMore}>Load more</button>
+          <LoadMoreBtn onClick={this.handleLoadMore}>Load more</LoadMoreBtn>
         )}
         {loading && (
           <div>
