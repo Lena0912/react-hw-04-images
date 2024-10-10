@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import Modal from 'react-modal';
-import { StyledImageItem } from './ImageGalleryItem.styled';
+
 
 const customStyles = {
   content: {
@@ -46,7 +46,7 @@ export class ImageGalleryItem extends Component {
     } = this.props;
     return (
       <div>
-        <StyledImageItem
+        <image
           src={webformatURL}
           alt={tags}
           onClick={this.openModal}
