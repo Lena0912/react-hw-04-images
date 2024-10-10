@@ -3,7 +3,8 @@ import { Searchbar } from "./SearchBar/SearchBar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { fetchImages } from './api';
 import { Layout } from "./Layout";
-
+import { Loader } from "./Loader/Loader";
+import toast, { Toaster } from 'react-hot-toast';
 
 export class App extends Component {
   state = {
@@ -36,29 +37,7 @@ export class App extends Component {
     }));
   };
   
-  // async componentDidMount() {
-  //   const { query, page } = this.state;
-  //   this.setState({ loading: true });
-  //   try {
-  //     const data = await fetchImages(query, page);
-
-  //     const filtredImages = data.hits.map(
-  //       ({ id, webformatURL, largeformatURL }) => ({
-  //         id,
-  //         webformatURL,
-  //         largeformatURL
-  //       })
-  //     );
-
-  //     this.setState(prevState => ({
-  //       images: [...prevState.images, ...data.hits],
-  //       loading: false,
-  //     }))
-  //     ;
-  //   } catch (error) {
-  //     this.setState({ error: true, loading: false });
-  //   }
-  // }
+notify = () => toast('Here is your toast.');
 
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
@@ -82,22 +61,26 @@ const filtredImages = data.hits.map(({ id, webformatURL, largeImageURL }) => ({
 
       } catch (error) {
         this.setState({ error: true, loading: false });
+        toast.error('Something went wrong. Please try again.');
       }
     }
   }
 
   render() {
-    const {images, loading, error} = this.state
+    const {images, loading} = this.state
     return (
       <Layout>
         <Searchbar onSubmit={this.handleSubmit} />
-        {error && <div>Error loading...</div>}
+        <Toaster />       
         <ImageGallery images={images} />
-
         {images.length > 0 && (
-          <button onClick={this.handeLoadMore}>Load more</button>
+          <button onClick={this.handleLoadMore}>Load more</button>
         )}
-        {loading && <div>Loader...</div>}
+        {loading && (
+          <div>
+            <Loader />
+          </div>
+        )}
       </Layout>
     );
   }
