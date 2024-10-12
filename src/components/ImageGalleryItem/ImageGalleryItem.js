@@ -1,6 +1,7 @@
-import { Component } from 'react';
+
 import Modal from 'react-modal';
 import { StyledImageItem } from './ImageGalleryItem.styled';
+import { useState } from 'react';
 
 
 const customStyles = {
@@ -27,35 +28,28 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-export class ImageGalleryItem extends Component {
-  state = {
-    isModalOpen: false,
+export const ImageGalleryItem = ({ image: { webformatURL, largeImageURL, tags }, }) => {
+ const [isModalOpen, setIsModalOpen] = useState(false)   
+
+ const openModal = () => {
+    setIsModalOpen(true);
   };
 
-  openModal = () => {
-    this.setState({ isModalOpen: true });
+ const closeModal = () => {
+    setIsModalOpen(false);
   };
-
-  closeModal = () => {
-    this.setState({ isModalOpen: false });
-  };
-
-  render() {
-    const { isModalOpen } = this.state;
-    const {
-      image: { webformatURL, largeImageURL, tags },
-    } = this.props;
+ 
     return (
       <div>
         <StyledImageItem
           src={webformatURL}
           alt={tags}
-          onClick={this.openModal}
+          onClick={openModal}
           style={{ cursor: 'pointer' }}
         />
         <Modal
           isOpen={isModalOpen}
-          onRequestClose={this.closeModal}
+          onRequestClose={closeModal}
           style={customStyles}
           contentLabel="Large image"
         >
@@ -65,4 +59,4 @@ export class ImageGalleryItem extends Component {
       </div>
     );
   }
-}
+

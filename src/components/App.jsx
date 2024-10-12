@@ -1,4 +1,4 @@
-import { Component } from "react";
+import {  useEffect, useState } from "react";
 import { Searchbar } from "./SearchBar/SearchBar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { fetchImages } from './api';
@@ -6,45 +6,37 @@ import { Layout, LoadMoreBtn } from "./Layout";
 import { Loader } from "./Loader/Loader";
 import toast, { Toaster } from 'react-hot-toast';
 
-export class App extends Component {
-  state = {
-    query: '',
-    page: 1,
-    images: [],
-    loading: false,
-    error: false,
+
+export const App = () => {
+  const [query, setQuery] = useState();
+  const [page, setPage] = useState(1);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+const handleLoadMore = () => {
+    setPage(prevState => prevState + 1);    
   };
 
-  handleSubmit = evt => {
+const handleSubmit = evt => {
     evt.preventDefault();
-    const query = evt.target.elements.query.value.trim();
-    if (query === '') return;
-
-    this.setState({
-      query,
-      page: 1,
-      images: [],
-      loading: true,
-      error: false
-    });
+    const newQuery = evt.target.elements.query.value.trim();
+  if (newQuery === '') {
+    toast.error('Please enter a search term.')
+ return;
+  }
+  setQuery(newQuery);
+  setPage(1);
+  setImages([]);
+  setError(false);
   };
 
+  useEffect(() => { 
+if (!query) return; 
 
-
-  handleLoadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1
-    }));
-  };
+    const loadImages = async () => {
+  setLoading(true);    
   
-notify = () => toast('Here is your toast.');
-
-  async componentDidUpdate(prevProps, prevState) {
-    const { query, page } = this.state;
-    if (prevState.query !== query || 
-      prevState.page !== page) {
-      this.setState({ loading: true });
-
       try {
         const data = await fetchImages(query, page);
 
@@ -53,35 +45,35 @@ const filtredImages = data.hits.map(({ id, webformatURL, largeImageURL }) => ({
   webformatURL,
   largeImageURL,
 }));
-
-        this.setState(prevState => ({
-          images: [...prevState.images, ...filtredImages],
-          loading: false,
-        }));
-
+        setImages(prevState => [...prevState, ...filtredImages]);
+        
       } catch (error) {
-        this.setState({ error: true, loading: false });
+        setError(true);            
         toast.error('Something went wrong. Please try again.');
+      } finally {
+        setLoading(false);    
       }
-    }
-  }
-
-  render() {
-    const {images, loading} = this.state
+};
+  
+loadImages();
+}, [query, page]);
+  
     return (
       <Layout>
-        <Searchbar onSubmit={this.handleSubmit} />
-        <Toaster />       
+        <Searchbar onSubmit={handleSubmit} />
+        <Toaster />
         <ImageGallery images={images} />
         {images.length > 0 && (
-          <LoadMoreBtn onClick={this.handleLoadMore}>Load more</LoadMoreBtn>
+          <LoadMoreBtn onClick={handleLoadMore}>Load more</LoadMoreBtn>
         )}
         {loading && (
           <div>
             <Loader />
           </div>
         )}
+        {error && <p>Something went wrong. Please try again later.</p>}
       </Layout>
     );
-  }
-}
+};
+
+  
